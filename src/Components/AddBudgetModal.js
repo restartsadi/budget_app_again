@@ -25,17 +25,11 @@ export default function AddBudgetModal({ show, handleClose }) {
         <Modal.Body>
           <Form.Group className="mb-3" controlId="nameValue">
             <Form.Label>Name</Form.Label>
-            <Form.Control type="text" ref={nameRef} required />
+            <Form.Control type="text" required />
           </Form.Group>
           <Form.Group className="mb-3" controlId="maxValue">
             <Form.Label>Maximum Spending</Form.Label>
-            <Form.Control
-              type="number"
-              ref={maxRef}
-              required
-              min={0}
-              step={0.01}
-            />
+            <Form.Control type="number" required min={0} step={0.01} />
           </Form.Group>
           <div className="d-flex justify-content-end">
             <Button variant="primary" type="submit">
