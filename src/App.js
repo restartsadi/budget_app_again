@@ -3,11 +3,10 @@ import BudgetCard from "./Components/BudgetCard";
 import AddBudgetModal from "./Components/AddBudgetModal";
 import { useState } from "react";
 import { useBudgets } from "./Contexts/BudgetsContext";
-import { BudgetsContext } from "./Contexts/BudgetsContext";
 //import getBudgetExpenses from "./Contexts/BudgetsContext/BudgetsProvider/value";
 export default function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
-  const { budgets } = useBudgets();
+  const { budgets, getBudgetExpenses } = useBudgets();
   return (
     <>
       <Container className="my-4">
@@ -32,7 +31,7 @@ export default function App() {
               <BudgetCard
                 key={budget.id}
                 name={budget.name}
-                amount={budget.amount}
+                amount={amount}
                 max={budget.max}
               />
             );
