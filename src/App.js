@@ -3,12 +3,22 @@ import BudgetCard from "./Components/BudgetCard";
 import AddBudgetModal from "./Components/AddBudgetModal";
 import AddExpenseModal from "./Components/AddExpenseModal";
 import { useState } from "react";
-import { useBudgets } from "./Contexts/BudgetsContext";
+import { UNCATEGORIZED_BUDGET_ID, useBudgets } from "./Contexts/BudgetsContext";
+import UncategorizedBudgetCard from "./Components/UncategorizedBudgetCard";
+import ViewExpensesModal from "./Components/ViewExpensesModal";
+import TotalBudgetCard from "./Components/TotalBudgetCard";
 //import getBudgetExpenses from "./Contexts/BudgetsContext/BudgetsProvider/value";
 export default function App() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState(false);
+  const [viewExpenseModalBudgetId, setViewExpenseModalBudgetId] = useState();
   const { budgets, getBudgetExpenses } = useBudgets();
+
+  function openAddExpenseModal(budgetId) {
+    setShowAddExpenseModal(true);
+    setAddExpenseModalBudgetId(budgetId);
+  }
   return (
     <>
       <Container className="my-4">
@@ -17,11 +27,8 @@ export default function App() {
           <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>
             Add Budget
           </Button>
-          <Button
-            variant="outline-primary"
-            onClick={() => setShowAddExpenseModal(true)}
-          >
-            {" "}
+
+          <Button variant="outline-primary" onClick={openAddExpenseModal}>
             Add Expense
           </Button>
         </Stack>
@@ -44,9 +51,16 @@ export default function App() {
                 name={budget.name}
                 amount={amount}
                 max={budget.max}
+                gray
+                onAddExpenseClick={() => openAddExpenseModal(budget.id)}
+                onViewExpenseClick={() =>
+                  setViewExpenseModalBudgetId(UNCATEGORIZED_BUDGET_ID)
+                }
               />
             );
           })}
+          <UncategorizedBudgetCard onAddExpenseClick={openAddExpenseModal} />
+          <TotalBudgetCard />
         </div>
       </Container>
 
@@ -57,7 +71,13 @@ export default function App() {
 
       <AddExpenseModal
         show={showAddExpenseModal}
+        defaultBudgetId={addExpenseModalBudgetId}
         handleClose={() => setShowAddExpenseModal(false)}
+      />
+
+      <ViewExpensesModal
+        budgetId={viewExpenseModalBudgetId}
+        handleClose={() => setViewExpenseModalBudgetId()}
       />
     </>
   );
